@@ -1,0 +1,152 @@
+/* Reset & Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --inline-gap: 25px;
+  --padding-gap: 20px;
+}
+
+body {
+  height: 100vh;
+  background-color: #252422;
+  align-content: center;
+}
+
+/* Main Container */
+main {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin-left: 15vw;
+}
+
+/* Shared Styles for Game Board & Playable Balls */
+#game-board,
+#playable-balls-box {
+  padding-inline: var(--padding-gap);
+  padding-bottom: var(--padding-gap);
+}
+
+#playable-balls-box {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(30px, 1fr));
+  padding-top: 0;
+  height: fit-content;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(30px, 1fr));
+  min-height: 530px;
+  max-width: 600px;
+  min-width: 300px;
+  background-color: #ccc5b9;
+  gap: var(--inline-gap);
+  padding-top: var(--padding-gap);
+  border-radius: 10px;
+}
+
+/* Columns */
+article {
+  display: grid;
+  gap: var(--inline-gap);
+  width: fit-content;
+  justify-items: center;
+  position: relative;
+}
+
+/* Cells & Playable Balls */
+.cell,
+.playable-ball {
+  aspect-ratio: 1 / 1;
+  background-color: #252422;
+  border-radius: 50%;
+}
+
+.playable-ball {
+  height: 100%;
+  transition: background-color 200ms ease-in;
+}
+
+/* Responsive Design */
+@media (max-width: 825px) {
+  main {
+    margin: 0;
+  }
+  body {
+    justify-items: center;
+  }
+}
+@media (max-width: 530px) {
+  #game-board {
+    padding-inline: 5px;
+  }
+}
+
+/* CHANGING TURN */
+
+.true {
+  background-color: red;
+}
+.false {
+  background-color: blue;
+}
+
+/* CELEBRATING STYLE*/
+
+.hidden {
+  display: none;
+}
+
+#winner-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 2rem;
+  border-radius: 10px;
+  z-index: 999;
+  animation: pop-in 0.5s ease-in-out;
+}
+
+@keyframes pop-in {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+#winner-popup h1 {
+  color: gold;
+  text-shadow: 0px 0px 10px gold;
+  white-space: nowrap;
+}
+
+#winner-popup button {
+  background: red;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+#winner-popup button:hover {
+  background: darkred;
+}
