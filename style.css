@@ -5,6 +5,11 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration: none;
+  color: #ffff;
+}
+
 :root {
   --inline-gap: 25px;
   --padding-gap: 20px;
@@ -14,6 +19,7 @@ body {
   height: 100vh;
   background-color: #252422;
   align-content: center;
+  color: #ccc5b9;
 }
 
 /* Main Container */
@@ -21,7 +27,7 @@ main {
   display: flex;
   flex-direction: column;
   width: fit-content;
-  margin-left: 15vw;
+  /* margin-left: 15vw; */
 }
 
 /* Shared Styles for Game Board & Playable Balls */
@@ -34,8 +40,16 @@ main {
 #playable-balls-box {
   display: grid;
   grid-template-columns: repeat(7, minmax(30px, 1fr));
-  padding-top: 0;
+  padding-top: calc(var(--padding-gap) - 10px);
+  padding-bottom: calc(var(--padding-gap) - 10px);
   height: fit-content;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 10px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom: none;
+  transition: border-color, 150ms ease-out;
 }
 
 #game-board {
@@ -48,6 +62,8 @@ main {
   gap: var(--inline-gap);
   padding-top: var(--padding-gap);
   border-radius: 10px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 /* Columns */

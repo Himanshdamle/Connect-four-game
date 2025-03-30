@@ -10,17 +10,25 @@ const game = [
 const gameBoardLength = game.length;
 
 const container = document.querySelector("#playable-balls-box");
+
+let whichColor = "blue";
 container.addEventListener(
   "mouseenter",
   (e) => {
-    if (e.target !== container) e.target.classList.add(turn);
+    if (e.target !== container) {
+      e.target.classList.add(turn);
+      container.style.borderColor = whichColor;
+    }
   },
   true
 );
 container.addEventListener(
   "mouseleave",
   (e) => {
-    if (e.target !== container) e.target.classList.remove(turn, !turn);
+    if (e.target !== container) {
+      e.target.classList.remove(turn, !turn);
+      container.style.borderColor = whichColor;
+    }
   },
   true
 );
@@ -31,6 +39,7 @@ let turn = false; // false = 'blue', true = 'red'
 container.addEventListener(
   "click",
   (e) => {
+    document.querySelector(".intro-box").style.display = "none";
     if (e.target === container) return;
 
     const col = document.getElementsByClassName(e.target.classList[1])[1];
@@ -61,6 +70,8 @@ container.addEventListener(
     turn = !turn;
     e.target.classList.remove(!turn);
     e.target.classList.add(turn);
+    whichColor = turn ? "red" : "blue";
+    container.style.borderColor = whichColor;
   },
   true
 );
