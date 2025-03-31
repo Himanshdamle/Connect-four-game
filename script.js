@@ -35,6 +35,7 @@ container.addEventListener(
 
 const cols = document.querySelectorAll(".column");
 let turn = false; // false = 'blue', true = 'red'
+let countTurn = 0;
 
 container.addEventListener(
   "click",
@@ -47,6 +48,9 @@ container.addEventListener(
     const cellPicked = [...col.children]
       .reverse()
       .find((cell) => cell.getAttribute("filled") !== "true");
+    if (!cellPicked) return;
+
+    countTurn++;
     cellPicked.classList.add(turn);
     cellPicked.setAttribute("filled", "true");
     const [preciseRow, preciseCol] = cellPicked
@@ -63,10 +67,10 @@ container.addEventListener(
     else if (checkWin(turn, preciseRow, preciseCol, false)) return;
     else if (
       checkWin(turn, preciseRow, preciseCol, true, "left") ||
-      checkWin(turn, preciseRow, preciseCol, true, "rigth")
+      checkWin(turn, preciseRow, preciseCol, true, "right")
     )
       return;
-
+    else if (countTurn === 42) declareWinner(true);
     turn = !turn;
     e.target.classList.remove(!turn);
     e.target.classList.add(turn);
@@ -88,7 +92,7 @@ function checkVertical(color, row, col) {
     else move++;
 
     if (move === 4) {
-      color ? declareWinner("RED") : declareWinner("BLUE");
+      color ? declareWinner(false, "RED") : declareWinner(false, "BLUE");
       return true;
     }
   }
@@ -130,39 +134,35 @@ function checkWin(color, row, col, isDiagonal, diagonalDir) {
     }
 
     if (count >= 4) {
-      color ? declareWinner("RED") : declareWinner("BLUE");
+      color ? declareWinner(false, "RED") : declareWinner(false, "BLUE");
       return true;
     }
   }
 }
 
-function startConfetti() {
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 },
-  });
-
-  setTimeout(() => {
-    confetti({
-      particleCount: 150,
-      spread: 90,
-      origin: { y: 0.7 },
-    });
-  }, 500);
-}
-
-function declareWinner(player) {
-  const winnerPopup = document.getElementById("winner-popup");
-  const winnerText = document.getElementById("winner-text");
-  winnerText.innerText = `🎉 ${player ? "Red" : "Blue"} Wins! 🎉`;
-  winnerPopup.classList.remove("hidden");
-
-  startConfetti();
-
-  container.style.pointerEvents = "none";
-}
-
-document.getElementById("restart-btn").addEventListener("click", () => {
+document.querySelector("#reset-btn").addEventListener("click", () => {
   location.reload();
 });
+
+function declareWinner(isDraw, winnerColor) {
+  document.querySelector("#winner-wrapper").style.display = "block";
+  document
+    .querySelectorAll(".playable-ball")
+    .forEach((ball) => (ball.style.display = "none"));
+  const winner = document.querySelector("#winner");
+  winner.innerText = !isDraw ? `${winnerColor} WON` : "DRAW";
+  container.style.pointerEvents = "none";
+  container.style.display = "block";
+
+  if (!isDraw) {
+    let switchColorFlag = false;
+
+    setInterval(() => {
+      const chooseColor = switchColorFlag ? "#eb5e28" : winnerColor;
+      winner.style.color = chooseColor;
+      container.style.borderColor = chooseColor;
+
+      switchColorFlag = !switchColorFlag;
+    }, 300);
+  }
+}
